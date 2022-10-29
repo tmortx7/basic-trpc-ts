@@ -1,4 +1,3 @@
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -9,10 +8,43 @@ datasource db {
 }
 
 model User {
-  id        String   @id @default(uuid())
-  username  String
-  email     String
+  id       String @id @default(uuid())
+  username String
+  email    String
 
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
+}
+
+model MeasuredVariable {
+  id        String   @id @default(uuid())
+  variable  String   @unique
+  mvalias     String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+
+  instruments InstrumentISA[]
+}
+
+model InstrumentFunction {
+  id                 String   @id @default(uuid())
+  instrumentfunction String
+  alias              String
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @default(now()) @updatedAt
+
+  instruments InstrumentISA[]
+}
+
+model InstrumentISA {
+  id             String   @id @default(uuid())
+  description    String
+  mv             MeasuredVariable   @relation(fields: [mvId], references: [id])
+  mvId           String
+  instfunction   InstrumentFunction @relation(fields: [instfunctionId], references: [id])
+  instfunctionId String
+  createdAt      DateTime           @default(now())
+  updatedAt      DateTime           @default(now()) @updatedAt
+
+
 }
