@@ -23,7 +23,7 @@ import {
 import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
 
 const InstrumentMVListPage: NextPage = () => {
-  const [mv, setMV] = React.useState("flow");
+  const [value, setValue] = React.useState("flow");
   const utils = trpc.useContext();
   const mutation = trpc.measuredvariable.delete.useMutation({
     async onSuccess() {
@@ -31,7 +31,7 @@ const InstrumentMVListPage: NextPage = () => {
     },
   });
   const mvQuery = trpc.measuredvariable.list.useQuery();
-  const variable = mv;
+  const variable = value;
   const { data, isLoading, error } = trpc.measuredvariable.byVariable.useQuery({
     variable,
   });
@@ -43,8 +43,8 @@ const InstrumentMVListPage: NextPage = () => {
     return <p>Error....</p>;
   }
 
-  const handleMVSelect = (e: any) => {
-    setMV(e.target.value);
+  const handleChange = (event: any) => {
+    setValue(event.target.value);
   };
 
   return (
@@ -57,10 +57,7 @@ const InstrumentMVListPage: NextPage = () => {
       <main>
         <Flex bg="gray.100" align="center" justify="center" h="100vh">
           <Box>
-            <Select
-              mb="12"
-              onChange={handleMVSelect}
-            >
+            <Select mb="12" value={value} onChange={handleChange}>
               {mvQuery.data?.map((mvx: any) => (
                 <option value={mvx.variable}>{mvx.variable}</option>
               ))}

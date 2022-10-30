@@ -19,7 +19,7 @@ model User {
 model MeasuredVariable {
   id        String   @id @default(uuid())
   variable  String   @unique
-  mvalias     String   @unique
+  mvalias   String   @unique
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
 
@@ -37,7 +37,7 @@ model InstrumentFunction {
 }
 
 model InstrumentISA {
-  id             String   @id @default(uuid())
+  id             String             @id @default(uuid())
   description    String
   mv             MeasuredVariable   @relation(fields: [mvId], references: [id])
   mvId           String
@@ -45,6 +45,13 @@ model InstrumentISA {
   instfunctionId String
   createdAt      DateTime           @default(now())
   updatedAt      DateTime           @default(now()) @updatedAt
+}
 
-
+model Site {
+  id          String   @id @default(uuid())
+  site        String
+  siteAlias   String   @unique
+  description String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @default(now()) @updatedAt
 }
