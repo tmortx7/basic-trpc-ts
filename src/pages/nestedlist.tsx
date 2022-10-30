@@ -16,10 +16,10 @@ const NestedListPage = () => {
               <ListItem>
                 <Text fontWeight="bold">{value.variable}</Text>
               </ListItem>
-              {value.instruments.map((skill) => {
+              {value.instruments.map((subx) => {
                 return (
                   <ListItem>
-                    <Text mx="5">{skill.description}</Text>
+                    <Text mx="5">{subx.description}</Text>
                   </ListItem>
                 );
               })}
