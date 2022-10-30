@@ -23,7 +23,7 @@ model MeasuredVariable {
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
 
-  instruments InstrumentISA[]
+  instruments InstrumentType[]
 }
 
 model InstrumentFunction {
@@ -33,10 +33,10 @@ model InstrumentFunction {
   createdAt          DateTime @default(now())
   updatedAt          DateTime @default(now()) @updatedAt
 
-  instruments InstrumentISA[]
+  instruments InstrumentType[]
 }
 
-model InstrumentISA {
+model InstrumentType {
   id             String             @id @default(uuid())
   description    String
   mv             MeasuredVariable   @relation(fields: [mvId], references: [id])
@@ -47,6 +47,32 @@ model InstrumentISA {
   updatedAt      DateTime           @default(now()) @updatedAt
 }
 
+model Address {
+  id         String   @id @default(uuid())
+  plusCode   String?
+  Add1       String?
+  Add2       String?
+  City       String   @default("calgary")
+  province   String   @default("alberta")
+  postalCode String   @default("-")
+  Country    String   @default("canada")
+  note       String   @default("-")
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @default(now()) @updatedAt
+  site       Site     @relation(fields: [siteId], references: [id])
+  siteId     String   @unique
+}
+
+model Department {
+  id          String   @id @default(uuid())
+  dept        String
+  deptAlias   String   @unique
+  description String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @default(now()) @updatedAt
+  sites       Site[]
+}
+
 model Site {
   id          String   @id @default(uuid())
   site        String
@@ -54,4 +80,32 @@ model Site {
   description String
   createdAt   DateTime @default(now())
   updatedAt   DateTime @default(now()) @updatedAt
+
+  department Department  @relation(fields: [deptId], references: [id])
+  deptId     String
+  address    Address?
+  equipment  Equipment[]
+}
+
+model EquipmentType {
+  id          String      @id @default(uuid())
+  equipAlias  String      @unique
+  description String
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @default(now()) @updatedAt
+  equipment   Equipment[]
+}
+
+model Equipment {
+  id          String   @id @default(uuid())
+  prefix      String
+  description String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @default(now()) @updatedAt
+
+  type        EquipmentType @relation(fields: [equiptypeId], references: [id])
+  equiptypeId String
+
+  site   Site   @relation(fields: [siteId], references: [id])
+  siteId String
 }

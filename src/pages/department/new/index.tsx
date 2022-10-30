@@ -5,34 +5,36 @@ import { Formik } from "formik";
 import { toFormikValidationSchema } from "zod-formik-adapter";
 import { useRouter } from "next/router";
 import { trpc } from "../../../utils/trpc";
-import { IInstrumentISA, InstrumentISASchema } from "../../../schema/instrumentisa.schema";
+import { DepartmentSchema, IDepartment } from "../../../schema/department.schema";
 
 const initialValues = {
-  nmvId: "",
-  instfunctionId: "",
-  description: "",
+  dept: "",
+  deptAlias: "",
+  description: "-"
 };
 
-const CreateInstrumentPage: NextPage = () => {
+const CreateDepartmentPage: NextPage = () => {
   const router = useRouter();
-  const mutation = trpc.instrument.add.useMutation();
-
-  const mvQuery = trpc.measuredvariable.list.useQuery();
-  const funcQuery = trpc.instrumentfunction.list.useQuery();
+  const utils = trpc.useContext();
+  const mutation = trpc.department.add.useMutation({
+    async onSuccess() {
+      await utils.department.list.invalidate();
+    },
+  });
 
   return (
     <div>
       <Flex bg="gray.100" align="center" justify="center" h="100vh">
         <Box bg="white" p={6} rounded="md">
-          Create Instrument
+          Create Department
         <Formik
           initialValues={initialValues}
-          onSubmit={async(values: IInstrumentISA) => {
+          onSubmit={async(values: IDepartment) => {
             mutation.mutate(values);
             console.log(values)
-            router.push("/instrument");
+            router.push("/department");
           }}
-          validationSchema={toFormikValidationSchema(InstrumentISASchema)}
+          validationSchema={toFormikValidationSchema(DepartmentSchema)}
         >
           {({ handleSubmit }) => (
             <Stack
@@ -46,26 +48,17 @@ const CreateInstrumentPage: NextPage = () => {
               as="form"
               onSubmit={handleSubmit as any}
             >
-              <SelectControl
-                  label="Measured Variable"
-                  name="mvId"
-                  selectProps={{ placeholder: "Select MV" }}
-                >
-                  {mvQuery.data?.map((mvx: any) => (
-                    <option value={mvx.id}>{mvx.variable}-{mvx.mvalias}</option>
-                  ))}
-                </SelectControl>
-                <SelectControl
-                  label="Instrument Function"
-                  name="instfunctionId"
-                  selectProps={{ placeholder: "Select Function" }}
-                >
-                  {funcQuery.data?.map((funcx: any) => (
-                    <option value={funcx.id}>{funcx.instrumentfunction}-{funcx.alias}</option>
-                  ))}
-                </SelectControl>
-
               <InputControl
+                name="dept"
+                label="Department"
+                inputProps={{ autoComplete: "off" }}
+              />
+              <InputControl
+                name="deptAlias"
+                label="Alias"
+                inputProps={{ autoComplete: "off" }}
+              />
+               <InputControl
                 name="description"
                 label="Description"
                 inputProps={{ autoComplete: "off" }}
@@ -80,4 +73,4 @@ const CreateInstrumentPage: NextPage = () => {
   );
 };
 
-export default CreateInstrumentPage;
+export default CreateDepartmentPage;

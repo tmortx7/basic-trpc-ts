@@ -16,7 +16,7 @@ const NestedListPage = () => {
               <ListItem>
                 <Text fontWeight="bold">{value.variable}</Text>
               </ListItem>
-              {value.instruments.map((subx) => {
+              {value.instruments.map((subx:any) => {
                 return (
                   <ListItem>
                     <Text mx="5">{subx.description}</Text>

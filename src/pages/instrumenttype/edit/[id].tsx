@@ -1,17 +1,15 @@
 import { Box, Flex, Stack } from "@chakra-ui/react";
-import { InputControl, SelectControl, SubmitButton } from "../../../components";
-import { NextPage } from "next";
-import { Formik } from "formik";
-import { toFormikValidationSchema } from "zod-formik-adapter";
-import router, { useRouter } from "next/router";
-import NextError from "next/error";
-import { trpc } from "../../../utils/trpc";
-import React from "react";
-import superjson from "superjson";
 import { createProxySSGHelpers } from "@trpc/react/ssg";
+import { Formik } from "formik";
 import { GetServerSidePropsContext, InferGetServerSidePropsType } from "next";
+import NextError from "next/error";
+import router, { useRouter } from "next/router";
+import superjson from "superjson";
+import { toFormikValidationSchema } from "zod-formik-adapter";
+import { InputControl, SelectControl, SubmitButton } from "../../../components";
+import { EditInstrumentTypeSchema, IEditInstrumentType } from "../../../schema/instrumenttype.schema";
 import { appRouter } from "../../../server/routers/_app";
-import { EditInstrumentISASchema, IEditInstrumentISA } from "../../../schema/instrumentisa.schema";
+import { trpc } from "../../../utils/trpc";
 
 const EditInstrumentPage = (
   props: InferGetServerSidePropsType<typeof getServerSideProps>
@@ -53,11 +51,11 @@ const EditInstrumentPage = (
               instfunctionId: data.instfunctionId,
               description: data.description
             }}
-            onSubmit={async (values: IEditInstrumentISA) => {
+            onSubmit={async (values: IEditInstrumentType) => {
               mutation.mutate(values);
               router.push("/instrument");
             }}
-            validationSchema={toFormikValidationSchema(EditInstrumentISASchema)}
+            validationSchema={toFormikValidationSchema(EditInstrumentTypeSchema)}
           >
             {({ handleSubmit }) => (
               <Stack

@@ -1,23 +1,23 @@
-import { router, publicProcedure } from "../trpc";
 import { Prisma } from "@prisma/client";
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
-import { prisma } from "../..//server/prisma";
-import { EditInstrumentISASchema, InstrumentISASchema } from "../../schema/instrumentisa.schema";
+import { EditInstrumentTypeSchema, InstrumentTypeSchema } from "../../schema/instrumenttype.schema";
+import { prisma } from "../prisma";
+import { publicProcedure, router } from "../trpc";
 
 
-const defaultInstrumentISASelect =
-  Prisma.validator<Prisma.InstrumentISASelect>()({
+const defaultInstrumentTypeSelect =
+  Prisma.validator<Prisma.InstrumentTypeSelect>()({
     id: true,
     mvId: true,
     instfunctionId: true,
     description: true,
   });
 
-export const instrumentisaRouter = router({
+export const instrumenttypeRouter = router({
   list: publicProcedure.query(() => {
-    return prisma.instrumentISA.findMany({
-      select: defaultInstrumentISASelect,
+    return prisma.instrumentType.findMany({
+      select: defaultInstrumentTypeSelect,
     });
   }),
   byId: publicProcedure
@@ -28,35 +28,35 @@ export const instrumentisaRouter = router({
     )
     .query(async ({ input }) => {
       const { id } = input;
-      const instx= await prisma.instrumentISA.findUnique({
+      const instx= await prisma.instrumentType.findUnique({
         where: { id },
-        select: defaultInstrumentISASelect,
+        select: defaultInstrumentTypeSelect,
       });
       if (!instx) {
         throw new TRPCError({
           code: "NOT_FOUND",
-          message: `No instrumentISA with id '${id}'`,
+          message: `No instrumentType with id '${id}'`,
         });
       }
       return instx;
     }),
   add: publicProcedure
-    .input(InstrumentISASchema)
+    .input(InstrumentTypeSchema)
     .mutation(async ({ input }) => {
-      const instx = await prisma.instrumentISA.create({
+      const instx = await prisma.instrumentType.create({
         data: {
           mvId: input.mvId,
           instfunctionId: input.instfunctionId,
           description: input.description,
         },
-        select: defaultInstrumentISASelect,
+        select: defaultInstrumentTypeSelect,
       });
       return instx;
     }),
   edit: publicProcedure
-    .input(EditInstrumentISASchema)
+    .input(EditInstrumentTypeSchema)
     .mutation(async ({ input }) => {
-      return await prisma.instrumentISA.update({
+      return await prisma.instrumentType.update({
         where: {
           id: input.id,
         },
@@ -74,7 +74,7 @@ export const instrumentisaRouter = router({
       })
     )
     .mutation(async ({ input }) => {
-      return await prisma.instrumentISA.delete({
+      return await prisma.instrumentType.delete({
         where: { id: input.id },
       });
     }),

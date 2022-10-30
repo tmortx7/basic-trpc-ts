@@ -23,7 +23,7 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx"
-  ],
+, "src/schema/instrumenttype/.schema.ts"  ],
   "exclude": [
     "node_modules"
   ]
