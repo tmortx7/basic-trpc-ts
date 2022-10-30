@@ -1,4 +1,4 @@
-import { Box, Flex, Stack } from "@chakra-ui/react";
+import { Box, Button, ButtonGroup, Flex, Stack } from "@chakra-ui/react";
 import { InputControl, SelectControl, SubmitButton } from "../../../components";
 import { NextPage } from "next";
 import { Formik } from "formik";
@@ -11,7 +11,10 @@ import superjson from "superjson";
 import { createProxySSGHelpers } from "@trpc/react/ssg";
 import { GetServerSidePropsContext, InferGetServerSidePropsType } from "next";
 import { appRouter } from "../../../server/routers/_app";
-import { EditInstrumentFunctionSchema, IEditInstrumentFunction } from "../../../schema/instrumentfunction.schema";
+import {
+  EditInstrumentFunctionSchema,
+  IEditInstrumentFunction,
+} from "../../../schema/instrumentfunction.schema";
 
 const EditInstrumentFunctionPage = (
   props: InferGetServerSidePropsType<typeof getServerSideProps>
@@ -22,7 +25,7 @@ const EditInstrumentFunctionPage = (
       await utils.instrumentfunction.list.invalidate();
     },
   });
-
+  const router = useRouter();
   const id = useRouter().query.id as string;
   const instxQuery = trpc.instrumentfunction.byId.useQuery({ id });
 
@@ -55,7 +58,9 @@ const EditInstrumentFunctionPage = (
               mutation.mutate(values);
               router.push("/instrumentfunction");
             }}
-            validationSchema={toFormikValidationSchema(EditInstrumentFunctionSchema)}
+            validationSchema={toFormikValidationSchema(
+              EditInstrumentFunctionSchema
+            )}
           >
             {({ handleSubmit }) => (
               <Stack
@@ -80,7 +85,12 @@ const EditInstrumentFunctionPage = (
                   inputProps={{ autoComplete: "off" }}
                 />
 
-                <SubmitButton colorScheme={'blue'}>Submit</SubmitButton>
+                <ButtonGroup>
+                  <SubmitButton colorScheme={"blue"}>Submit</SubmitButton>
+                  <Button onClick={() => router.push("/instrumentfunction")}>
+                    Cancel
+                  </Button>
+                </ButtonGroup>
               </Stack>
             )}
           </Formik>

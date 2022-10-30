@@ -2,6 +2,7 @@
  * This file contains the root router of your tRPC-backend
  */
  import { router } from '../trpc';
+import { addressRouter } from './address';
 import { departmentRouter } from './department';
 import { equipmentRouter } from './equipment';
 import { equipmenttypeRouter } from './equipmenttype';
@@ -19,6 +20,7 @@ import { siteRouter } from './site';
    site: siteRouter,
    equipment: equipmentRouter,
    equipmenttype: equipmenttypeRouter,
+   address: addressRouter,
  });
 
  export type AppRouter = typeof appRouter;

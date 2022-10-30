@@ -1,4 +1,4 @@
-import { Box, Flex, Stack } from "@chakra-ui/react";
+import { Box, Button, ButtonGroup, Flex, Stack } from "@chakra-ui/react";
 import { createProxySSGHelpers } from "@trpc/react/ssg";
 import { Formik } from "formik";
 import { GetServerSidePropsContext, InferGetServerSidePropsType } from "next";
@@ -24,7 +24,7 @@ const EditEquipmentPage = (
       await utils.equipment.list.invalidate();
     },
   });
-
+  const router = useRouter();
   const id = useRouter().query.id as string;
   const equipQuery = trpc.equipment.byId.useQuery({ id });
 
@@ -107,7 +107,12 @@ const EditEquipmentPage = (
                   inputProps={{ autoComplete: "off" }}
                 />
 
-                <SubmitButton colorScheme={"blue"}>Submit</SubmitButton>
+                <ButtonGroup>
+                  <SubmitButton colorScheme={"blue"}>Submit</SubmitButton>
+                  <Button onClick={() => router.push("/equipment")}>
+                    Cancel
+                  </Button>
+                </ButtonGroup>
               </Stack>
             )}
           </Formik>

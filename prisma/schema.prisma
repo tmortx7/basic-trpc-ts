@@ -50,12 +50,12 @@ model InstrumentType {
 model Address {
   id         String   @id @default(uuid())
   plusCode   String?
-  Add1       String?
-  Add2       String?
-  City       String   @default("calgary")
+  add1       String?
+  add2       String?
+  city       String   @default("calgary")
   province   String   @default("alberta")
   postalCode String   @default("-")
-  Country    String   @default("canada")
+  country    String   @default("canada")
   note       String   @default("-")
   createdAt  DateTime @default(now())
   updatedAt  DateTime @default(now()) @updatedAt

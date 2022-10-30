@@ -1,4 +1,4 @@
-import { Box, Flex, Stack } from "@chakra-ui/react";
+import { Box, Button, ButtonGroup, Flex, Stack } from "@chakra-ui/react";
 import { InputControl, SelectControl, SubmitButton } from "../../../components";
 import { NextPage } from "next";
 import { Formik } from "formik";
@@ -78,7 +78,12 @@ const CreateEquipment: NextPage = () => {
                   label="Prefix"
                   inputProps={{ autoComplete: "off" }}
                 />
-                <SubmitButton colorScheme={"blue"}>Submit</SubmitButton>
+                <ButtonGroup>
+                  <SubmitButton colorScheme={"blue"}>Submit</SubmitButton>
+                  <Button onClick={() => router.push("/equipment")}>
+                    Cancel
+                  </Button>
+                </ButtonGroup>
               </Stack>
             )}
           </Formik>

@@ -1,4 +1,4 @@
-import { Box, Flex, Stack } from "@chakra-ui/react";
+import { Box, Button, ButtonGroup, Flex, Stack } from "@chakra-ui/react";
 import { createProxySSGHelpers } from "@trpc/react/ssg";
 import { Formik } from "formik";
 import { GetServerSidePropsContext, InferGetServerSidePropsType } from "next";
@@ -23,7 +23,7 @@ const EditDepartmentPage = (
       await utils.department.list.invalidate();
     },
   });
-
+  const router = useRouter();
   const id = useRouter().query.id as string;
   const deptQuery = trpc.department.byId.useQuery({ id });
 
@@ -86,8 +86,12 @@ const EditDepartmentPage = (
                   label="Description"
                   inputProps={{ autoComplete: "off" }}
                 />
-
-                <SubmitButton colorScheme={"blue"}>Submit</SubmitButton>
+                <ButtonGroup>
+                  <SubmitButton colorScheme={"blue"}>Submit</SubmitButton>
+                  <Button onClick={() => router.push("/department")}>
+                    Cancel
+                  </Button>
+                </ButtonGroup>
               </Stack>
             )}
           </Formik>

@@ -1,4 +1,4 @@
-import { Box, Flex, Stack } from "@chakra-ui/react";
+import { Box, Button, ButtonGroup, Flex, Stack } from "@chakra-ui/react";
 import { createProxySSGHelpers } from "@trpc/react/ssg";
 import { Formik } from "formik";
 import { GetServerSidePropsContext, InferGetServerSidePropsType } from "next";
@@ -7,7 +7,10 @@ import router, { useRouter } from "next/router";
 import superjson from "superjson";
 import { toFormikValidationSchema } from "zod-formik-adapter";
 import { InputControl, SelectControl, SubmitButton } from "../../../components";
-import { EditInstrumentTypeSchema, IEditInstrumentType } from "../../../schema/instrumenttype.schema";
+import {
+  EditInstrumentTypeSchema,
+  IEditInstrumentType,
+} from "../../../schema/instrumenttype.schema";
 import { appRouter } from "../../../server/routers/_app";
 import { trpc } from "../../../utils/trpc";
 
@@ -20,7 +23,7 @@ const EditInstrumentPage = (
       await utils.instrument.list.invalidate();
     },
   });
-
+  const router = useRouter();
   const id = useRouter().query.id as string;
   const instrumentQuery = trpc.instrument.byId.useQuery({ id });
 
@@ -49,13 +52,15 @@ const EditInstrumentPage = (
               id: data.id,
               mvId: data.mvId,
               instfunctionId: data.instfunctionId,
-              description: data.description
+              description: data.description,
             }}
             onSubmit={async (values: IEditInstrumentType) => {
               mutation.mutate(values);
               router.push("/instrument");
             }}
-            validationSchema={toFormikValidationSchema(EditInstrumentTypeSchema)}
+            validationSchema={toFormikValidationSchema(
+              EditInstrumentTypeSchema
+            )}
           >
             {({ handleSubmit }) => (
               <Stack
@@ -69,7 +74,7 @@ const EditInstrumentPage = (
                 as="form"
                 onSubmit={handleSubmit as any}
               >
-                 <SelectControl
+                <SelectControl
                   label="Measured Variable"
                   name="mvId"
                   selectProps={{ placeholder: "Select MV" }}
@@ -88,13 +93,18 @@ const EditInstrumentPage = (
                   ))}
                 </SelectControl>
 
-              <InputControl
-                name="description"
-                label="Description"
-                inputProps={{ autoComplete: "off" }}
-              />
+                <InputControl
+                  name="description"
+                  label="Description"
+                  inputProps={{ autoComplete: "off" }}
+                />
 
-                <SubmitButton colorScheme={'blue'}>Submit</SubmitButton>
+                <ButtonGroup>
+                  <SubmitButton colorScheme={"blue"}>Submit</SubmitButton>
+                  <Button onClick={() => router.push("/instrumenttype")}>
+                    Cancel
+                  </Button>
+                </ButtonGroup>
               </Stack>
             )}
           </Formik>
