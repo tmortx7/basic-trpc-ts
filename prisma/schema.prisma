@@ -45,6 +45,7 @@ model InstrumentType {
   instfunctionId String
   createdAt      DateTime           @default(now())
   updatedAt      DateTime           @default(now()) @updatedAt
+  tag            InstrumentTag[]
 }
 
 model Address {
@@ -106,6 +107,20 @@ model Equipment {
   type        EquipmentType @relation(fields: [equiptypeId], references: [id])
   equiptypeId String
 
-  site   Site   @relation(fields: [siteId], references: [id])
+  site   Site            @relation(fields: [siteId], references: [id])
   siteId String
+  tag    InstrumentTag[]
+}
+
+model InstrumentTag {
+  id        String   @id @default(uuid())
+  tag       String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+
+  equipment   Equipment @relation(fields: [equipmentId], references: [id])
+  equipmentId String
+
+  instrumenttype   InstrumentType @relation(fields: [instrumenttypeId], references: [id])
+  instrumenttypeId String
 }

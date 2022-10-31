@@ -7,6 +7,7 @@ import { departmentRouter } from './department';
 import { equipmentRouter } from './equipment';
 import { equipmenttypeRouter } from './equipmenttype';
 import { instrumentfunctionRouter } from './instrumentfunction';
+import { instrumenttagRouter } from './instrumenttag';
 import { instrumenttypeRouter } from './instrumenttype';
 import { measuredVariableRouter } from './measuredvariable';
 import { siteRouter } from './site';
@@ -21,6 +22,7 @@ import { siteRouter } from './site';
    equipment: equipmentRouter,
    equipmenttype: equipmenttypeRouter,
    address: addressRouter,
+   instrumenttag: instrumenttagRouter,
  });
 
  export type AppRouter = typeof appRouter;

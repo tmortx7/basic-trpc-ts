@@ -33,7 +33,7 @@ const CreateInstrumentPage: NextPage = () => {
             onSubmit={async (values: IInstrumentType) => {
               mutation.mutate(values);
               console.log(values);
-              router.push("/instrument");
+              router.push("/instrumenttype");
             }}
             validationSchema={toFormikValidationSchema(InstrumentTypeSchema)}
           >

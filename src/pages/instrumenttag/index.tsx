@@ -18,68 +18,52 @@ import {
   IconButton,
   LinkOverlay,
   LinkBox,
-  Select,
 } from "@chakra-ui/react";
 import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
 
-const InstrumentMVListPage: NextPage = () => {
-  const [value, setValue] = React.useState("flow");
+const InstrumentTagListPage: NextPage = () => {
   const utils = trpc.useContext();
-  const mutation = trpc.measuredvariable.delete.useMutation({
+  const mutation = trpc.instrumenttag.delete.useMutation({
     async onSuccess() {
-      await utils.measuredvariable.list.invalidate();
+      await utils.instrumenttag.list.invalidate();
     },
   });
-  const mvQuery = trpc.measuredvariable.list.useQuery();
-  const variable = value;
-  const { data, isLoading, error } = trpc.measuredvariable.byVariable.useQuery({
-    variable,
-  });
+  const { data, isLoading, error } = trpc.instrumenttag.list.useQuery();
   if (isLoading) {
     return <p> Loading...</p>;
   }
-
   if (error) {
-    return <p>Error....</p>;
+    return <p>Error...</p>;
   }
-
-  const handleChange = (event: any) => {
-    setValue(event.target.value);
-  };
 
   return (
     <div>
       <Head>
-        <title>List of Measured Variables</title>
-        <meta name="description" content="measuredvariables" />
+        <title>List of Instrument Tag</title>
+        <meta name="description" content="instrument function" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
         <Flex bg="gray.100" align="center" justify="center" h="100vh">
           <Box>
-            <Select mb="12" value={value} onChange={handleChange}>
-              {mvQuery.data?.map((mvx: any) => (
-                <option value={mvx.variable}>{mvx.variable}</option>
-              ))}
-            </Select>
             <TableContainer>
               <Table variant="striped" colorScheme="gray 300">
                 <Thead>
                   <Tr>
-                    <Th>Variable</Th>
+                    <Th>Tag</Th>
                     <Th>Edit</Th>
                     <Th>Delete</Th>
                   </Tr>
                 </Thead>
                 <Tbody>
-                  {data?.instruments.map(({ id, description }) => (
+                  {data?.map(({ id, tag }) => (
                     <Tr key={id}>
-                      <Td>{description}</Td>
+                      <Td>{tag}</Td>
                       <Td>
                         <LinkBox>
-                          <LinkOverlay href={`/instrumenttype/edit/${id}`}>
+                          <LinkOverlay href={`/instrumenttag/edit/${id}`}>
                             <IconButton
-                              aria-label="Delete measuredvariable"
+                              aria-label="Delete instrumenttag"
                               size="sm"
                               icon={<EditIcon />}
                             />
@@ -88,7 +72,7 @@ const InstrumentMVListPage: NextPage = () => {
                       </Td>
                       <Td>
                         <IconButton
-                          aria-label="Delete measuredvariable"
+                          aria-label="Delete instrumenttag"
                           size="sm"
                           icon={<DeleteIcon />}
                           onClick={() => mutation.mutate({ id })}
@@ -106,4 +90,4 @@ const InstrumentMVListPage: NextPage = () => {
   );
 };
 
-export default InstrumentMVListPage;
+export default InstrumentTagListPage;
