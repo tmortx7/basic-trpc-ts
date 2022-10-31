@@ -4,6 +4,8 @@ import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 import { prisma } from "../prisma";
 import { AddressSchema, EditAddressSchema } from "../../schema/address.schema";
+import { PrismaClientKnownRequestError } from "@prisma/client/runtime";
+import { trpc } from "../../utils/trpc";
 
 const defaultAddressSelect = Prisma.validator<Prisma.AddressSelect>()({
   id: true,
@@ -45,21 +47,37 @@ export const addressRouter = router({
       return addx;
     }),
   add: publicProcedure.input(AddressSchema).mutation(async ({ input }) => {
-    const addx = await prisma.address.create({
-      data: {
-        plusCode: input.plusCode,
-        add1: input.add1,
-        add2: input.add2,
-        city: input.city,
-        province: input.province,
-        postalCode: input.postalCode,
-        country: input.country,
-        note: input.note,
-        siteId: input.siteId,
-      },
-      select: defaultAddressSelect,
-    });
-    return addx;
+    try {
+      const addx = await prisma.address.create({
+        data: {
+          plusCode: input.plusCode,
+          add1: input.add1,
+          add2: input.add2,
+          city: input.city,
+          province: input.province,
+          postalCode: input.postalCode,
+          country: input.country,
+          note: input.note,
+          siteId: input.siteId,
+        },
+        select: defaultAddressSelect,
+      });
+      return addx;
+    } catch (e) {
+      if (e instanceof PrismaClientKnownRequestError) {
+        if (e.code === "P2002") {
+          throw new trpc.TRPCError({
+            code: "CONFLICT",
+            message: "Address already exists",
+          });
+        }
+      }
+
+      throw new trpc.TRPCError({
+        code: "INTERNAL_SERVER_ERROR",
+        message: "Something went wrong",
+      });
+    }
   }),
   edit: publicProcedure.input(EditAddressSchema).mutation(async ({ input }) => {
     return await prisma.address.update({
