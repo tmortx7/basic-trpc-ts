@@ -62,12 +62,14 @@ const CreateInstrumentTagPage: NextPage = () => {
                   ))}
                 </SelectControl>
                 <SelectControl
-                  label="Instrument Type"
+                  label="Type"
                   name="instrumenttypeId"
-                  selectProps={{ placeholder: "Select Instrument type" }}
+                  selectProps={{ placeholder: "Select Instrument Type" }}
                 >
                   {instrumenttypeQuery.data?.map((typex: any) => (
-                    <option value={typex.id}>{typex.description}</option>
+                    <option value={typex.id}>
+                      {typex.description}
+                    </option>
                   ))}
                 </SelectControl>
                 <InputControl

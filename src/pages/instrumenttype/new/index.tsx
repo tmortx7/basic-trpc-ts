@@ -18,7 +18,7 @@ const initialValues = {
 
 const CreateInstrumentPage: NextPage = () => {
   const router = useRouter();
-  const mutation = trpc.instrument.add.useMutation();
+  const mutation = trpc.instrumenttype.add.useMutation();
 
   const mvQuery = trpc.measuredvariable.list.useQuery();
   const funcQuery = trpc.instrumentfunction.list.useQuery();

@@ -18,14 +18,14 @@ const EditInstrumentPage = (
   props: InferGetServerSidePropsType<typeof getServerSideProps>
 ) => {
   const utils = trpc.useContext();
-  const mutation = trpc.instrument.edit.useMutation({
+  const mutation = trpc.instrumenttype.edit.useMutation({
     async onSuccess() {
-      await utils.instrument.list.invalidate();
+      await utils.instrumenttype.list.invalidate();
     },
   });
   const router = useRouter();
   const id = useRouter().query.id as string;
-  const instrumentQuery = trpc.instrument.byId.useQuery({ id });
+  const instrumentQuery = trpc.instrumenttype.byId.useQuery({ id });
 
   if (instrumentQuery.error) {
     return (
@@ -124,7 +124,7 @@ export async function getServerSideProps(
   });
   const id = context.params?.id as string;
   // Prefetch `post.byId`
-  await ssg.instrument.byId.fetch({ id });
+  await ssg.instrumenttype.byId.fetch({ id });
   // Make sure to return { props: { trpcState: ssg.dehydrate() } }
   return {
     props: {

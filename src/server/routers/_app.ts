@@ -16,7 +16,7 @@ import { siteRouter } from './site';
 
    measuredvariable: measuredVariableRouter,
    instrumentfunction: instrumentfunctionRouter,
-   instrument: instrumenttypeRouter,
+   instrumenttype: instrumenttypeRouter,
    department: departmentRouter,
    site: siteRouter,
    equipment: equipmentRouter,

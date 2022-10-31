@@ -22,7 +22,7 @@ import {
 } from "@chakra-ui/react";
 import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
 
-const InstrumentMVListPage: NextPage = () => {
+const InstrumentTypeListPage: NextPage = () => {
   const [value, setValue] = React.useState("flow");
   const utils = trpc.useContext();
   const mutation = trpc.measuredvariable.delete.useMutation({
@@ -106,4 +106,4 @@ const InstrumentMVListPage: NextPage = () => {
   );
 };
 
-export default InstrumentMVListPage;
+export default InstrumentTypeListPage;

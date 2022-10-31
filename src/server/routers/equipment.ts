@@ -14,6 +14,7 @@ const defaultEquipmentSelect = Prisma.validator<Prisma.EquipmentSelect>()({
   description: true,
   siteId: true,
   equiptypeId: true,
+  site: true,
 });
 
 export const equipmentRouter = router({

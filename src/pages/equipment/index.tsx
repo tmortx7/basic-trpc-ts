@@ -52,6 +52,7 @@ const EquipmentListPage: NextPage = () => {
                   <Tr>
                     <Th>Equipment</Th>
                     <Th>Prefix</Th>
+                    <Th>Site</Th>
                     <Th>Edit</Th>
                     <Th>Delete</Th>
                   </Tr>
